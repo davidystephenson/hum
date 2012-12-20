@@ -5,14 +5,14 @@ class Main extends MovieClip {
 
 	public var console:ConsoleSender;
 	public var canvas:MovieClip;
-	public var prism:Prism;
+	public var hum:Hum;
 
 	public function new() {
 		super();
 		
 		console = new ConsoleSender();
 		canvas = flash.Lib.current;
-		prism = new Prism(canvas);
+		hum = new Hum(canvas);
 
 	} // public function new()
 
