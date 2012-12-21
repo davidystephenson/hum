@@ -2,10 +2,9 @@ import flash.Lib;
 import flash.display.MovieClip;
 
 class Main extends MovieClip {
-
     public var console:ConsoleSender;
     public var canvas:MovieClip;
-    public var hum:Hum;
+    public var orchestra:Orchestra;
 
     public function new() {
         super();
@@ -16,10 +15,13 @@ class Main extends MovieClip {
         // Declare the canvas
         canvas = flash.Lib.current;
 
-        // Create a Hum
-        hum = new Hum(canvas, 450, 0, 400);
-        var hum2 = new Hum(canvas, 0, 0, 400); 
+        // Create the orchestra, which will contain, manage, and play hums
+        orchestra = new Orchestra(canvas);
 
+        // Create two hums
+        orchestra.newHum(0, 0, 300);
+        orchestra.newHum(600, 0, 300);
+        orchestra.newHum(300, 0, 300);
     } // public function new()
 
     static function main() {
