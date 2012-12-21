@@ -6,12 +6,11 @@ import haxe.Timer;
 
 class Hum extends MovieClip {
     public var canvas:MovieClip;
-    public var boxes:Array<Box>;
+    public var boxes:Array<Array<Box>>;
     public var rowNum:Int;
     public var colNum:Int;
-    public var column:Int;
-    public var span:Int;
-    public var depth:Int;
+    public var position:Int;
+    public var size:Int;
     public var red:Int;
     public var blue:Int;
     public var instrument:SoundChannel;
@@ -20,17 +19,20 @@ class Hum extends MovieClip {
     public var notes:Array<Dynamic>;
     public var timer:Timer;
 
-    public function new(myCanvas:MovieClip) {
+    public function new(myCanvas:MovieClip, myX, myY, mySize) {
     super();
     canvas = myCanvas;
+    x = myX;
+    y = myY;
 
-    // Determine how many notes in a single cycle
+    // Determine the size of the Hum. Hums are square, so only one variable is needed.
+    size = mySize;
+
+    // colNum is the number of columns - how many notes will be played before the cycle repeats
     colNum = 8;
-    column = 0;
 
-    // Determine the size of the Prism. Currently this is the size of the embedded flash object. Width and height are reserved names, so span is used for width and depths is used for height.
-    span = 970;
-    depth = 600;
+    // Position is the column that will be played next
+    position = 0;
 
     // Set hex values for colors
     blue = 0x0000FF;
@@ -56,13 +58,14 @@ class Hum extends MovieClip {
 
     // Create the score. This is read and modified by the boxes, and read by the instrument during playColumn
     score = new Array<Array<Dynamic>>();
-    for(i in 0...rowNum) score[i] = [];
+    for(row in 0...rowNum) score[row] = [];
     /// Set the default score values to 0;
-    for(row in 0...rowNum) for (column in 0...colNum) score[row][column] = 0;
+    for(row in 0...rowNum) for(column in 0...colNum) score[row][column] = 0;
 
     // Create the boxes; one for each column in reach row. Boxes are fed their location. 
-    boxes = new Array<Box>();
-    for(row in 0...rowNum) for(column in 0...colNum) boxes.push(new Box(this, row, column)); 
+    boxes = new Array<Array<Box>>();
+    for(row in 0...rowNum) boxes[row] = [];
+    for(row in 0...rowNum) for(column in 0...colNum) boxes[row][column] = new Box(this, row, column); 
 
     // Create the instrument, which will be used by playColumn()
     instrument = new SoundChannel();
@@ -76,12 +79,27 @@ class Hum extends MovieClip {
 
     public function playColumn() {
     // Run by the timer
-
-    // Play the box in the current column in each row
-    for(row in 0...rowNum) if(score[row][column]) instrument = notes[row].play();
     
-    // Increment the the column to be played
-    column = (column + 1) % colNum;
+    // Turn off highlighting
+    for(row in 0...rowNum) for(column in 0...colNum) boxes[row][column].alpha = 1;
+
+    // Play the current column
+    for(row in 0...rowNum) {
+        // Determine the column to highlight. Due to latency, the user hears the previous column
+        var highlight = position - 1;
+
+        /// If negative, highlight last column
+        if(highlight < 0) highlight = colNum - 1;
+
+        // Highlight the appropriate column
+        boxes[row][highlight].alpha = 0.75; 
+
+        // Play each box in the current column
+        if(score[row][position]) instrument = notes[row].play(); 
+    }
+    
+    // Increment the column to be played
+    position = (position + 1) % colNum;
     } // public function playColumn()
 
     /*

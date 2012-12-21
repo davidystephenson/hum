@@ -17,7 +17,8 @@ class Main extends MovieClip {
         canvas = flash.Lib.current;
 
         // Create a Hum
-        hum = new Hum(canvas);
+        hum = new Hum(canvas, 450, 0, 400);
+        var hum2 = new Hum(canvas, 0, 0, 400); 
 
     } // public function new()
 

@@ -23,8 +23,8 @@ class Box extends MovieClip {
         else { graphics.beginFill(hum.blue); selected = false; }
 
         // Each Box should be an equal portion of the hum
-        /// Determine if there is less room for height or width to fit all rows and columns
-        size = Math.min(hum.depth / hum.rowNum, hum.span / hum.colNum);
+        /// Determine if there is less room for to fit all rows and columns
+        size = Math.min(hum.size / hum.rowNum, hum.size / hum.colNum);
         /// Draw the square
         graphics.drawRect(0, 0, size - 1, size -1);
         /// Place the box
@@ -32,7 +32,7 @@ class Box extends MovieClip {
         y = row * size;
 
         addEventListener(MouseEvent.MOUSE_DOWN, toggle);
-        hum.canvas.addChild(this);
+        hum.addChild(this);
     } // public function new(grid:MovieClip, columnNumber:Int, rowNumber:Int)
 
     public function toggle(event:MouseEvent) {
