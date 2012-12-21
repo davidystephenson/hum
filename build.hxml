@@ -1,6 +1,4 @@
 -main Main
 -swf main.swf
--lib thx
--lib ArrayTools
 -swf-header 970:600:40:FFFFFF
 -swf-lib lib.swf
