@@ -11,20 +11,23 @@ class Box extends MovieClip {
 
 	public function new(myHum:Hum, myRow:Int, myColumn:Int) {
 		super();
-
-		//Initialize basic variables	
-		hum = myHum;
+        hum = myHum;
 		row = myRow;
 		column = myColumn;
-		selected = false;
 
-		//Check the score to see if the Box is on
+		// Boxes are not selected by default
+		selected = false;
+		
+		// Check the score to see if the Box is selected
 		if(hum.score[row][column]) { graphics.beginFill(hum.red); selected = true; }
 		else { graphics.beginFill(hum.blue); selected = false; }
 
 		// Each Box should be an equal portion of the hum
+        /// Determine if there is less room for height or width to fit all rows and columns
 		size = Math.min(hum.depth / hum.rowNum, hum.span / hum.colNum);
+        /// Draw the square
 		graphics.drawRect(0, 0, size - 1, size -1);
+        /// Place the box
 		x = column * size;
 		y = row * size;
 

@@ -10,8 +10,13 @@ class Main extends MovieClip {
 	public function new() {
 		super();
 		
+        // Prep debugging
 		console = new ConsoleSender();
+
+        // Declare the canvas
 		canvas = flash.Lib.current;
+
+        // Create a Hum
 		hum = new Hum(canvas);
 
 	} // public function new()
